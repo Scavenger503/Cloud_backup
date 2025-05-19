@@ -1,271 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Cloud Backup with Encryption</title>
+  <meta charset="UTF-8">
+  <title>Cyberpunk Terminal: Cloud Backup</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       margin: 0;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-
-    .interface-container {
-      display: flex;
-      flex-wrap: nowrap;
-      justify-content: center;
-      max-width: 950px;
-      margin: auto;
-    }
-
-    .iphone, .encryption-panel {
-      flex: 1 1 300px;
-      max-width: 390px;
-      width: 100%;
-      min-height: 600px;
-      border-radius: 40px;
-      box-shadow: 0 0 30px #00ffe7;
+      background-color: #000814;
+      color: #00ffe7;
+      font-family: 'Courier New', Courier, monospace;
       padding: 20px;
-      box-sizing: border-box;
-    }
-
-    .iphone {
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      position: relative;
-    }
-
-    .title-bar {
-      text-align: center;
-      font-weight: bold;
-      font-size: 22px;
-      background-color: #f0f0f0;
-      padding: 10px;
-      border-radius: 12px;
-    }
-
-    .backup-container {
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 40px;
-      position: relative;
     }
 
-    .device, .cloud {
-      width: 100px;
-      height: 100px;
-      border-radius: 20px;
-      background-color: #e0e0e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-weight: bold;
-      position: relative;
-      font-size: 16px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
-    }
-
-    .device::before {
-      content: "📁";
-      font-size: 32px;
-      margin-right: 6px;
-    }
-
-    .cloud::before {
-      content: "☁️";
-      font-size: 32px;
-      margin-right: 6px;
-    }
-
-    .arrow {
-      width: 10px;
-      height: 80px;
-      background-color: #222;
-      margin: 20px 0;
-      border-radius: 5px;
-      overflow: hidden;
-      position: relative;
-      box-shadow: inset 0 0 5px #00ffe7;
-    }
-
-    .arrow::after {
-      content: "";
-      position: absolute;
-      top: -100%;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(to bottom, transparent 0%, #00ffe7 50%, transparent 100%);
-      animation: scrollDown 6s linear infinite;
-    }
-
-    @keyframes scrollDown {
-      0% { top: -100%; }
-      100% { top: 100%; }
-    }
-
-    .file-transfer {
-      position: absolute;
-      top: 120px;
-      width: 30px;
-      height: 30px;
-      background-color: #00ffe7;
-      color: black;
-      font-size: 18px;
-      font-weight: bold;
-      text-align: center;
-      line-height: 30px;
-      border-radius: 6px;
-      animation: moveFile 6s linear infinite;
-      box-shadow: 0 0 8px #00ffe7;
-    }
-
-    @keyframes moveFile {
-      0% { top: 120px; opacity: 0.1; }
-      20% { opacity: 1; }
-      60% { top: 330px; opacity: 1; }
-      80% { opacity: 0; }
-      100% { top: 120px; opacity: 0; }
-    }
-
-    .status {
-      text-align: center;
-      font-size: 18px;
-      margin-top: 30px;
-      color: #000;
-      font-weight: bold;
-      min-height: 24px;
-    }
-
-    .encryption-panel {
-      background-color: #111;
-      color: #00ffe7;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      font-size: 16px;
-    }
-
-    .encryption-panel h2 {
-      margin-top: 0;
-      font-size: 22px;
-      text-align: center;
-      color: #00ffe7;
-    }
-
-    .message-block, .encrypted-block {
-      background-color: #222;
-      padding: 10px 15px;
+    .terminal {
+      background-color: #0d1117;
+      border: 2px solid #00ffe7;
       border-radius: 10px;
-      margin-bottom: 10px;
+      padding: 20px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 0 20px #00ffe7;
+      overflow-y: auto;
+      min-height: 500px;
+      line-height: 1.6;
+    }
+
+    .cmd-line {
       opacity: 0;
-      animation-fill-mode: forwards;
+      animation: fadeIn 1s forwards;
+      white-space: pre-wrap;
     }
 
-    .message-block {
-      animation: fadeInMessage 6s linear infinite;
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
 
-    .encrypted-block:nth-child(3) {
-      animation: fadeInBlock1 6s linear infinite;
-    }
-    .encrypted-block:nth-child(4) {
-      animation: fadeInBlock2 6s linear infinite;
-    }
-    .encrypted-block:nth-child(5) {
-      animation: fadeInBlock3 6s linear infinite;
+    .prompt {
+      color: #00ff88;
     }
 
-    @keyframes fadeInMessage {
-      0% { opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
+    .command {
+      color: #00ffff;
     }
 
-    @keyframes fadeInBlock1 {
-      15% { opacity: 0; }
-      25% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
+    .info {
+      color: #ffaa00;
     }
 
-    @keyframes fadeInBlock2 {
-      30% { opacity: 0; }
-      40% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    @keyframes fadeInBlock3 {
-      45% { opacity: 0; }
-      55% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { opacity: 0; }
-    }
-
-    @media (max-width: 768px) {
-      .interface-container {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .iphone, .encryption-panel {
-        width: 90%;
-        height: auto;
-        min-height: 400px;
-      }
+    .success {
+      color: #00ff00;
     }
   </style>
 </head>
 <body>
-  <div class="interface-container">
-    <div class="iphone">
-      <div class="title-bar">Cloud Backup</div>
-      <div class="backup-container">
-        <div class="device">Local</div>
-        <div class="arrow"></div>
-        <div class="cloud">Cloud</div>
-        <div class="file-transfer">⬆</div>
-      </div>
-      <div class="status" id="status-text">Encrypting & Uploading...</div>
-    </div>
-
-    <div class="encryption-panel">
-      <h2>Encryption Process</h2>
-      <div class="message-block">File: "Tax_Docs_2024.pdf"</div>
-      <div class="encrypted-block">AES-256 Encrypted → Block A1F9</div>
-      <div class="encrypted-block">AES-256 Encrypted → Block B2C8</div>
-      <div class="encrypted-block">AES-256 Encrypted → Block 9D4E</div>
-    </div>
-  </div>
+    <div class="terminal" id="terminalOutput"></div>
 
   <script>
-    const statusEl = document.getElementById("status-text");
-    let step = 0;
+    const lines = [
+      '<span class="prompt">user@cybernode:</span><span class="command">~$ init-backup --cloud --encrypt</span>',
+      '<span class="info">[Info]</span> Initializing secure cloud backup process...',
+      '<span class="info">[Info]</span> Scanning local directory: /home/user/Documents',
+      '<span class="info">[Info]</span> Preparing 18 files (72.4MB) for encryption...',
+      '<span class="info">[Encrypt]</span> Applying AES-256 encryption...',
+      '<span class="info">[Encrypt]</span> File: project_notes.txt → Encrypted block: 92A3',
+      '<span class="info">[Encrypt]</span> File: finances.xlsx → Encrypted block: 11B8',
+      '<span class="info">[Encrypt]</span> File: private_keys.gpg → Encrypted block: F5D4',
+      '<span class="info">[Info]</span> All files encrypted successfully.',
+      '<span class="info">[Upload]</span> Uploading encrypted data to CyberVault Cloud...',
+      '<span class="info">[Upload]</span> 32% ▓▓▓░░░░░░░░░',
+      '<span class="info">[Upload]</span> 67% ▓▓▓▓▓▓▓░░░░',
+      '<span class="info">[Upload]</span> 100% ▓▓▓▓▓▓▓▓▓▓',
+      '<span class="success">[Success]</span> Backup complete. Encrypted files stored at vault://cybercloud/user.backup2024',
+      '<span class="prompt">user@cybernode:</span><span class="command">~$</span>'
+    ];
 
-    function cycleStatus() {
-      if (step === 0) {
-        statusEl.textContent = "Encrypting & Uploading...";
-        step = 1;
-      } else {
-        statusEl.textContent = "Backup Complete";
-        step = 0;
-      }
+    const output = document.getElementById("terminalOutput");
+
+    function displayLines() {
+      output.innerHTML = "";
+      lines.forEach((line, i) => {
+        setTimeout(() => {
+          const div = document.createElement("div");
+          div.className = "cmd-line";
+          div.style.animationDelay = `${i * 0.5}s`;
+          div.innerHTML = line;
+          output.appendChild(div);
+          output.scrollTop = output.scrollHeight;
+        }, i * 800);
+      });
     }
 
-    cycleStatus();
-    setTimeout(() => {
-      cycleStatus();
-      setInterval(cycleStatus, 6000);
-    }, 4000);
+    displayLines();
+    setInterval(displayLines, lines.length * 800 + 5000);
   </script>
 </body>
 </html>
