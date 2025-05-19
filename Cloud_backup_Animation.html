@@ -16,12 +16,10 @@
 
     .interface-container {
       display: flex;
-      flex-wrap: wrap;
-      gap: 40px;
-      padding: 20px;
+      flex-wrap: nowrap;
       justify-content: center;
-      max-width: 100%;
-      box-sizing: border-box;
+      max-width: 950px;
+      margin: auto;
     }
 
     .iphone, .encryption-panel {
@@ -229,8 +227,6 @@
 </head>
 <body>
   <div class="interface-container">
-
-    <!-- Left iPhone panel -->
     <div class="iphone">
       <div class="title-bar">Cloud Backup</div>
       <div class="backup-container">
@@ -242,7 +238,6 @@
       <div class="status" id="status-text">Encrypting & Uploading...</div>
     </div>
 
-    <!-- Right Encryption process panel -->
     <div class="encryption-panel">
       <h2>Encryption Process</h2>
       <div class="message-block">File: "Tax_Docs_2024.pdf"</div>
@@ -250,7 +245,6 @@
       <div class="encrypted-block">AES-256 Encrypted → Block B2C8</div>
       <div class="encrypted-block">AES-256 Encrypted → Block 9D4E</div>
     </div>
-
   </div>
 
   <script>
@@ -267,7 +261,6 @@
       }
     }
 
-    // First status change after 4 seconds, then every 6 seconds
     cycleStatus();
     setTimeout(() => {
       cycleStatus();
@@ -276,4 +269,3 @@
   </script>
 </body>
 </html>
-
