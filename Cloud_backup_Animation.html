@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Cyberpunk Terminal: Cloud Backup</title>
+  <title>Terminal Cloud Backup</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
@@ -21,12 +21,12 @@
       border: 2px solid #00ffe7;
       border-radius: 10px;
       padding: 20px;
-      width: 90%;
+      width: 100%;
       max-width: 800px;
       box-shadow: 0 0 20px #00ffe7;
       overflow-y: auto;
-      min-height: 500px;
       line-height: 1.6;
+      min-height: 600px;
     }
 
     .cmd-line {
@@ -57,7 +57,7 @@
   </style>
 </head>
 <body>
-    <div class="terminal" id="terminalOutput"></div>
+  <div class="terminal" id="terminalOutput"></div>
 
   <script>
     const lines = [
@@ -81,7 +81,6 @@
     const output = document.getElementById("terminalOutput");
 
     function displayLines() {
-      output.innerHTML = "";
       lines.forEach((line, i) => {
         setTimeout(() => {
           const div = document.createElement("div");
@@ -92,10 +91,16 @@
           output.scrollTop = output.scrollHeight;
         }, i * 800);
       });
+
+      // Clear output just before restarting
+      setTimeout(() => {
+        output.innerHTML = "";
+      }, lines.length * 800 + 5000);
     }
 
     displayLines();
-    setInterval(displayLines, lines.length * 800 + 8000);
+    setInterval(displayLines, lines.length * 800 + 6000);
   </script>
 </body>
 </html>
+
